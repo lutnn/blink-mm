@@ -1,0 +1,1 @@
+python -m blink_mm.ae.organize.power

@@ -1,0 +1,18 @@
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC && \
+    apt update && \
+    apt upgrade -y && \
+    apt install -y libibverbs1 ibverbs-providers openssh-server git
+
+RUN /opt/conda/bin/python -m pip install pip --upgrade
+
+RUN mkdir /var/run/sshd && \
+    echo 'root:123456' | chpasswd && \
+    sed -i 's/# *PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+RUN printf '/usr/sbin/sshd -D\n' >> /root/entrypoint.sh
+
+EXPOSE 22
+ENTRYPOINT ["/bin/bash", "/root/entrypoint.sh"]

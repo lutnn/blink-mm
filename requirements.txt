@@ -1,0 +1,16 @@
+--extra-index-url https://download.pytorch.org/whl/cu116
+tensorboard
+torch
+torchvision
+torchaudio
+transformers
+datasets
+scikit-learn
+tqdm
+faiss-gpu
+fvcore
+matplotlib
+git+https://github.com/tigert1998/runner
+git+https://github.com/tigert1998/qat
+git+https://github.com/tigert1998/opcounter
+git+https://github.com/tigert1998/adb-helper
