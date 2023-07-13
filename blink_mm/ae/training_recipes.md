@@ -189,7 +189,8 @@ python -m blink_mm.expers.train_cnn \
     --model-type resnet18 \
     --lr-scheduler "{'name':'StepLR','step_size_epochs':30,'gamma':0.1}" \
     --optimizer "{'name':'SGD','momentum':0.9,'weight_decay':1e-4}" \
-    --log-interval 256
+    --log-interval 256 \
+    --checkpoint-hook "{'save_best':'mae','compare_op':'less'}"
 
 python -m blink_mm.expers.train_cnn \
     --imgs-per-gpu 256 \
@@ -203,7 +204,8 @@ python -m blink_mm.expers.train_cnn \
     --model-type senet18 \
     --lr-scheduler "{'name':'StepLR','step_size_epochs':30,'gamma':0.1}" \
     --optimizer "{'name':'SGD','momentum':0.9,'weight_decay':1e-4}" \
-    --log-interval 256
+    --log-interval 256 \
+    --checkpoint-hook "{'save_best':'mae','compare_op':'less'}"
 
 python -m blink_mm.expers.train_cnn \
     --imgs-per-gpu 256 \
@@ -217,7 +219,8 @@ python -m blink_mm.expers.train_cnn \
     --model-type vgg11_bn \
     --lr-scheduler "{'name':'StepLR','step_size_epochs':30,'gamma':0.1}" \
     --optimizer "{'name':'SGD','momentum':0.9,'weight_decay':1e-4}" \
-    --log-interval 256
+    --log-interval 256 \
+    --checkpoint-hook "{'save_best':'mae','compare_op':'less'}"
 
 # ImageNet models
 
