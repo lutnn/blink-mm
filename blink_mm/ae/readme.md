@@ -6,6 +6,8 @@ LUT-NN: Empower Efficient Neural Network Inference with Centroid Learning and Ta
 
 ## Latency Evaluation
 
+First of all, run `mkdir ./ae-output` to prepare for AE outputs.
+
 ### Setup RPC for TVM
 
 LUT-NN is implemented upon TVM.

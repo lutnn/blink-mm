@@ -29,6 +29,18 @@ make energy_profiler -j4
 make profile_tvm_model -j4
 ```
 
+### Download Datasets
+
+To download datasets, please run:
+
+```bash
+python -m blink_mm.data.download_datasets
+```
+
+This instruction will download CIFAR10, GTSRB, SVHN and Speech Commands datasets into the `./datasets` folder.
+Otherwise, if you would like to train LUT-NN on UTKFace or ImageNet,
+please manually download these two datasets to `./datasets/UTKFace` and `./datasets/imagenet-raw-data` respectively.
+
 ## Artifact Evaluation
 
 Please refer to the [AE README](blink_mm/ae/readme.md).
