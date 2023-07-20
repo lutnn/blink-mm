@@ -99,7 +99,7 @@ NUM_THREADS=2 bash blink_mm/ae/eval_latency/eval_pixel6.sh
 
 ### Output Files
 
-The raw layerwise profiling result is contained in `ae-output/layerwise-latency-report/`.
+The raw **layerwise** profiling result is contained in `ae-output/layerwise-latency-report/`.
 You can run the following command to generate diagrams to visualize the layerwise latency speedup
 (`ae-output/layerwise_latency.pdf`) of LUT-NN:
 
@@ -107,11 +107,57 @@ You can run the following command to generate diagrams to visualize the layerwis
 bash blink_mm/ae/organize/organize_layerwise_latency.sh
 ```
 
-The raw latency data points are in `ae-output/${hardware}-${num_threads}-threads.txt`
+The raw **end-to-end** latency data points are in `ae-output/${hardware}-${num_threads}-threads.txt`
 and `ae-output/${hardware}-ort.txt`,
 which contains results for LUT-NN/TVM and ONNX Runtime, respectively.
-Note that the model name prefixed with `amm` stands for the LUT-NN accelerated model.
-For example, `amm_bert_last_6_layers` stands for LUT-NN BERT model with 6 layers been replaced.
+In the LUT-NN/TVM and ONNX Runtime raw latency data file 
+(`ae-output/${hardware}-${num_threads}-threads.txt` and `ae-output/${hardware}-ort.txt`),
+we use mean latency to measure the performance of these three frameworks.
+
+For instance, the following shows an example output for LUT-NN/TVM raw latency file.
+The latency of ResNet18 (CIFAR10 version) using TVM on Pixel6 with 1 thread is 22.23ms.
+And the latency of ResNet18 (CIFAR10 version) using LUT-NN is 7.41ms (`amm` stands for LUT-NN).
+Additionally, `amm_bert_last_6_layers` represents LUT-NN BERT model with 6 layers been replaced.
+
+```
+Evaluating resnet18_cifar with 1 threads
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  22.2302      22.2737      22.4591      21.8357       0.2242   
+
+Evaluating amm_resnet18_cifar with 1 threads
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+   7.4144       6.9913       9.0854       6.9372       0.8382 
+```
+
+The example output in ONNX Runtime raw latency file is as follows.
+The latency of ResNet18 (CIFAR10 version) using ONNX Runtime with 1 thread is 19.918ms on Pixel6.
+The memory usage of ResNet18 (CIFAR10 version) using ONNX Runtime with 1 thread is 104.46MB (109531136 bytes).
+
+```
+Evaluating resnet18_cifar on ONNX Runtime with 1 threads
+Setting intra_op_num_threads to 1
+Session creation time cost: 0.0508382 s
+Total inference time cost: 1.9918 s
+Total inference requests: 100
+Average inference time cost: 19.918 ms
+Total inference run time: 1.99202 s
+Number of inferences per second: 50.2002 
+Avg CPU usage: 12 %
+Peak working set size: 109531136 bytes
+Avg CPU usage:12
+Peak working set size:109531136
+Runs:100
+Min Latency: 0.0197812 s
+Max Latency: 0.0202704 s
+P50 Latency: 0.0199047 s
+P90 Latency: 0.0200251 s
+P95 Latency: 0.0201534 s
+P99 Latency: 0.0202704 s
+P999 Latency: 0.0202704 s
+```
+
 
 ## GOPs and Disk Size Evaluation
 
