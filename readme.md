@@ -38,7 +38,7 @@ python -m blink_mm.data.download_datasets
 ```
 
 This instruction will download CIFAR10, GTSRB, SVHN and Speech Commands datasets into the `./datasets` folder.
-Otherwise, if you would like to train LUT-NN on UTKFace or ImageNet,
+Additionally, if you would like to train LUT-NN on UTKFace or ImageNet,
 please manually download these two datasets to `./datasets/UTKFace` and `./datasets/imagenet-raw-data` respectively.
 
 ## Artifact Evaluation

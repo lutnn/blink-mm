@@ -145,6 +145,7 @@ bash blink_mm/ae/eval_cnn_accuracy.sh
 
 Note that these two scripts only read in the pre-evaluated accuracy in the PyTorch checkpoint file
 since this AE server does not have a GPU.
+If you would like to train the models by yourself, please refer to the [training recipes](training_recipes.md).
 After evaluation, the accuracy data will be put in `ae-output/bert_accuracy.csv` and `ae-output/cnn_accuracy.csv`.
 The `amm` prefixed model names stand for LUT-NN models.
 And the `maddness` prefixed model names stand for MADDNESS models.
@@ -176,3 +177,12 @@ bash blink_mm/ae/organize/organize_power.sh
 ```
 
 The average power is in `ae-output/power-organized.csv`.
+
+## Ablation Studies
+
+To reproduce the ablation studies
+(learnable temperature/
+impact of the number of centroids and vector length/
+the impact of the number of layers to replace for LUT-NN BERT)
+results, please refer to the ablation study section of
+the [training recipes](training_recipes.md).

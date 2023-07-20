@@ -584,3 +584,74 @@ python -m blink_mm.expers.train_glue \
     --ckpt-path ${CKPT_FOLDER}/bert \
     --model-type amm_bert
 ```
+
+## Ablation Study
+
+```bash
+# Learnable Temperature
+
+python -m blink_mm.expers.train_cnn \
+    --imgs-per-gpu 256 \
+    --root ./datasets \
+    --dataset-type cifar10 \
+    --lr 1e-3 \
+    --temp-lr 1e-1 \
+    --num-epochs 200 \
+    --work-dir ${CKPT_FOLDER}/temperature-ablation-study/amm_resnet18_cifar-cifar10/annealing-temp \
+    --device-ids 0 \
+    --num-procs 1 \
+    --ckpt-path ${CKPT_FOLDER}/resnet18_cifar-cifar10/epoch_200.pth \
+    --model-type amm_resnet18_cifar \
+    --lr-scheduler "{'name':'CosineAnnealingLR'}" \
+    --optimizer "{'name':'Adam','betas':(0.9, 0.999),'weight_decay':0}" \
+    --log-interval 256 \
+    --temperature-config manual \
+    --temperature 1 1e-1
+
+python -m blink_mm.expers.train_cnn \
+    --imgs-per-gpu 256 \
+    --root ./datasets \
+    --dataset-type cifar10 \
+    --lr 1e-3 \
+    --temp-lr 1e-1 \
+    --num-epochs 200 \
+    --work-dir ${CKPT_FOLDER}/temperature-ablation-study/amm_resnet18_cifar-cifar10/const-temp \
+    --device-ids 0 \
+    --num-procs 1 \
+    --ckpt-path ${CKPT_FOLDER}/resnet18_cifar-cifar10/epoch_200.pth \
+    --model-type amm_resnet18_cifar \
+    --lr-scheduler "{'name':'CosineAnnealingLR'}" \
+    --optimizer "{'name':'Adam','betas':(0.9, 0.999),'weight_decay':0}" \
+    --log-interval 256 \
+    --temperature-config manual \
+    --temperature 1 1
+
+# Impact of the number of centroids and vector length
+
+python -m blink_mm.expers.search.grid_search_cnn \
+    --imgs-per-gpu 256 \
+    --root ./datasets \
+    --dataset-type cifar10 \
+    --lr 1e-3 \
+    --temp-lr 1e-1 \
+    --num-epochs 50 \
+    --work-dir ${CKPT_FOLDER}/kv-grid_search/amm_resnet18_cifar-cifar10 \
+    --device-ids 0 \
+    --num-procs 1 \
+    --ckpt-path ${CKPT_FOLDER}/resnet18_cifar-cifar10/epoch_200.pth \
+    --model-type amm_resnet18_cifar \
+    --temperature-config inverse \
+    --temperature 0.065
+
+# The impact of the number of layers to replace for LUT-NN BERT
+
+python -m blink_mm.expers.search.grid_search_glue \
+    --batch-size-per-gpu 32 \
+    --temp-lr 1e-1 \
+    --work-dir ${CKPT_FOLDER}/num_layers-grid_search/amm_bert \
+    --device-ids 0 \
+    --num-procs 1 \
+    --ckpt-dir ${CKPT_FOLDER}/bert \
+    --dataset-type stsb \
+    --grid-search-type layers
+```
