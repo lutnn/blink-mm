@@ -45,12 +45,14 @@ NUM_THREADS=2 bash blink_mm/ae/setup_rpc_for_tvm/setup_pixel6.sh
 ### Evaluate Latency for the x86 Server
 
 ```bash
-# Run the following command to compare LUT-NN model and the original model on x86 server with TVM.
-# This command will automatically evaluate using different number of threads.
+# Run the following command to compare the latencies of LUT-NN model and the original model on x86 server with TVM.
+# This command will automatically evaluate using different number of threads. 
+# This will take around 25 mins to finish (since kernels need to be generated and compiled to binaries), same for the following Pixel evalution.
 bash blink_mm/ae/eval_latency/eval_x86_server.sh
 
 # Run the following command to evalute the original model's latency on x86 server with ONNX Runtime.
 # This command will automatically evaluate using different number of threads.
+# This will take around 3 mins to finish (since ONNX Runtime is already in binaries), same for the following Pixel evalution.
 bash blink_mm/ae/eval_latency/eval_x86_server_ort.sh
 ```
 
@@ -59,7 +61,7 @@ bash blink_mm/ae/eval_latency/eval_x86_server_ort.sh
 After setting up RPC for Pixel4, we can start evaluating models' latency on it:
 
 ```bash
-# Run the following command to compare LUT-NN model and the original model on Pixel4 with TVM.
+# Run the following command to compare the latencies of LUT-NN model and the original model on Pixel4 with TVM.
 # This command will evaluate with one model inference thread.
 bash blink_mm/ae/eval_latency/eval_pixel4.sh
 
@@ -83,7 +85,7 @@ First, we evaluate the original models' latency on Pixel6 with ONNX Runtime:
 bash blink_mm/ae/eval_latency/eval_pixel6_ort.sh
 ```
 
-Second, we evaluate LUT-NN models and the original models on Pixel6 with TVM:
+Second, we evaluate the latencies of LUT-NN models and the original models on Pixel6 with TVM:
 
 ```bash
 # Command in the tmux session:
@@ -112,11 +114,11 @@ and `ae-output/${hardware}-ort.txt`,
 which contains results for LUT-NN/TVM and ONNX Runtime, respectively.
 In the LUT-NN/TVM and ONNX Runtime raw latency data file 
 (`ae-output/${hardware}-${num_threads}-threads.txt` and `ae-output/${hardware}-ort.txt`),
-we use mean latency to measure the performance of these three frameworks.
+We report the average/mean latency in the paper.
 
-For instance, the following shows an example output for LUT-NN/TVM raw latency file.
-The latency of ResNet18 (CIFAR10 version) using TVM on Pixel6 with 1 thread is 22.23ms.
-And the latency of ResNet18 (CIFAR10 version) using LUT-NN is 7.41ms (`amm` stands for LUT-NN).
+For instance, the following shows an example output for LUT-NN/TVM raw latency file.  
+The mean latency of ResNet18 (CIFAR10 version) using TVM on Pixel6 with 1 thread is 22.23ms.
+And the mean latency of ResNet18 (CIFAR10 version) using LUT-NN is 7.41ms (`amm` stands for LUT-NN).
 Additionally, `amm_bert_last_6_layers` represents LUT-NN BERT model with 6 layers been replaced.
 
 ```
@@ -132,7 +134,7 @@ Execution time summary:
 ```
 
 The example output in ONNX Runtime raw latency file is as follows.
-The latency of ResNet18 (CIFAR10 version) using ONNX Runtime with 1 thread is 19.918ms on Pixel6.
+The average latency of ResNet18 (CIFAR10 version) using ONNX Runtime with 1 thread is 19.918ms on Pixel6.
 The memory usage of ResNet18 (CIFAR10 version) using ONNX Runtime with 1 thread is 104.46MB (109531136 bytes).
 
 ```
