@@ -1,5 +1,8 @@
 # LUT-NN Training Recipes
 
+To train LUT-NN models, firstly you must train a corresponding vanilla baseline model,
+then you can convert the baseline model's checkpoint to a LUT-NN model by finetuning.
+
 ## The Baseline Models
 
 ```bash
@@ -264,6 +267,17 @@ python -m blink_mm.expers.train_glue \
 ```
 
 ## LUT-NN Models
+
+The hardware requirements for training LUT-NN models are listed below:
+
+|Dataset|LUT-NN Model|GPU Requirement|Estimated Time|
+|-|-|-|-|
+|CIFAR10, GTSRB, Speech Commands, SVHN|ResNet18, SENet18, VGG11|1x A100|24 hours|
+|UTKFace|ResNet18, SENet18|4x A6000|9.5 hours|
+|UTKFace|VGG11|4x A100|12 hours|
+|ImageNet|ResNet18, SENet18|8x V100|1 week|
+|ImageNet|VGG11|8x A100|3.5 days|
+|GLUE|BERT|4x V100|several hours|
 
 ```bash
 # CIFAR10 models

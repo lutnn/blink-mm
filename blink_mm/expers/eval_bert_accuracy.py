@@ -33,6 +33,7 @@ if __name__ == "__main__":
         metric = CONFIG["metrics"][dataset]
         max_number = float("-inf")
         for lr in [2e-5, 3e-5, 4e-5, 5e-5]:
+            print(f"Evaluating LUT-NN BERT {metric} for {dataset} dataset with lr={lr}")
             number = fast_evaluate(ckpt_folder, dataset, lr, metric)
             max_number = max(max_number, number)
         writer.writerow(["amm_bert", max_number, dataset, metric])
