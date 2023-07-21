@@ -599,6 +599,14 @@ python -m blink_mm.expers.train_glue \
     --model-type amm_bert
 ```
 
+## MADDNESS Models
+
+```bash
+python -m blink_mm.expers.maddness.eval \
+    --root-ckpt-folder ${CKPT_FOLDER} \
+    --save-ckpt-folder ${CKPT_FOLDER}/maddness
+```
+
 ## Ablation Study
 
 ```bash

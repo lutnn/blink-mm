@@ -94,7 +94,7 @@ def get_configs():
         }
     configs["utk_face"] = {
         "metric": "mae",
-        "models": ["maddness_resnet18"],
+        "models": ["maddness_resnet18", "maddness_vgg11_bn", "maddness_senet18"],
         "root": "datasets",
     }
     configs["imagenet"] = {
