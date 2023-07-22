@@ -16,7 +16,9 @@ If you want to deploy LUT-NN to real hardware, please install according to the f
 
 1. First, install [TVM for LUT-NN](https://github.com/lutnn/tvm-dpq) according to its readme.
 
-2. Then, build `energy_profiler` and `profile_tvm_model` using these instructions:
+2. Second, install [TVM RPC](https://github.com/lutnn/tvm-rpc) according to its readme.
+
+3. Lastly, build `energy_profiler` and `profile_tvm_model` using these instructions:
 
 ```bash
 mkdir build

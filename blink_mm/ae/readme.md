@@ -188,6 +188,9 @@ To evaluate the accuracy of LUT-NN models, versus MADDNESS and the original mode
 
 ```bash
 bash blink_mm/ae/eval_bert_accuracy.sh
+# The evaluated BERT accuracy is the accuracy on the validation set.
+# Our paper reports BERT accuracy on the test set (evaluated with GLUE evaluation server).
+# So there is little difference.
 bash blink_mm/ae/eval_cnn_accuracy.sh
 ```
 
@@ -234,3 +237,55 @@ impact of the number of centroids and vector length/
 the impact of the number of layers to replace for LUT-NN BERT)
 results, please refer to the ablation study section of
 the [training recipes](training_recipes.md).
+
+## (Optional) Tune schedule parameters for TVM/LUT-NN models
+
+To maximize the performace of TVM and LUT-NN models on x86/ARM CPUs,
+you must tune the kernel hyperparameters in these models.
+The TVM document [describes](https://tvm.apache.org/docs/v0.9.0/how_to/tune_with_autotvm/tune_relay_arm.html#sphx-glr-how-to-tune-with-autotvm-tune-relay-arm-py) the procedure of tuning.
+LUT-NN repository also provides the one-line script to tune both TVM and LUT-NN models.
+
+**If you are using the AE server,
+you can skip this part because all schedules are already tuned for the hardware we provide.
+But if you want to use your own CPU (no matter x86 or ARM CPUs),
+you must tune the kernels by yourself to get the maximum performance.
+The estimate tuning time for a model is several hours.**
+
+Here is the one-line script to tune all TVM/LUT-NN models:
+
+```bash
+# ${NUM_THREADS} is the number of model inference threads you would like to use.
+# ${PATH_TO_TVM_TUNING_RECORDS} is the output tvm tuning records path
+# ${TARGET} can be one of "arm", "x86", "x86_avx512"
+# ${DEVICE_NAME} can be any string. Pick a name for your device.
+# ${HOST} is only required when RPC tracker is used. It is the IP for the RPC tracker.
+# ${PORT} is only required when RPC tracker is used. It is the port for the RPC tracker.
+# ${KEY} is only required when RPC tracker is used. It is the device key in the RPC tracker.
+
+python -m blink_mm.tvm.export.bins.batch_tuning_main \
+    --num-threads ${NUM_THREADS} \
+    --tuning-records ${PATH_TO_TVM_TUNING_RECORDS} \
+    --target ${TARGET} \
+    --dev-name ${DEVICE_NAME} \
+    --host ${HOST} \
+    --port ${PORT} \
+    --key ${KEY}
+```
+
+Once the TVM tuning records (the tuning results) are got.
+You can test the performance of the models by the following one-line script:
+
+```bash
+# ${BINARY_PATH} is the path for the compiled models.
+
+python -m blink_mm.tvm.export.bins.batch_profiling_main \
+    --report ${PATH_TO_LAYERWISE_LATENCY_REPORT} \
+    --num-threads ${NUM_THREADS} \
+    --tuning-records ${PATH_TO_TVM_TUNING_RECORDS} \
+    --bin-path ${BINARY_PATH} \
+    --target ${TARGET} \
+    --dev-name ${DEVICE_NAME} \
+    --host ${HOST} \
+    --port ${PORT} \
+    --key ${KEY}
+```
