@@ -82,18 +82,18 @@ class AMMConv2d(nn.Module):
 
     @staticmethod
     def _quantize_lut(lut: torch.Tensor) -> QuantizedTensor:
-        # Quantize weight to -128 ~ 127
+        # Quantize weight to -16 ~ 15
         a = lut.min()
         b = lut.max()
         max_abs = torch.maximum(torch.abs(a), torch.abs(b))
 
         z = torch.zeros_like(a).to(torch.int8)
-        s = max_abs / (127 - z.to(torch.float32))
+        s = max_abs / (15 - z.to(torch.float32))
 
         q = torch.clamp(
             lut / s + z,
-            torch.tensor(-128).to(lut.device),
-            torch.tensor(127).to(lut.device)
+            torch.tensor(-16).to(lut.device),
+            torch.tensor(15).to(lut.device)
         ).round().to(torch.int8)
         return QuantizedTensor(q, s, z)
 
